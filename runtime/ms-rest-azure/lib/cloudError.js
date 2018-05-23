@@ -46,8 +46,8 @@ class CloudError extends Error {
         this.details = tempDetails;
       }
 
-      if (parameters.innererror) {
-        this.innererror = JSON.parse(JSON.stringify(parameters.innererror));
+      if (parameters.additionalInfo) {
+        this.additionalInfo = parameters.additionalInfo;
       }
     }
   }
@@ -102,11 +102,18 @@ class CloudError extends Error {
               }
             }
           },
-          innererror: {
+          additionalInfo: {
             required: false,
-            serializedName: 'innererror',
+            serializedName: 'additionalInfo',
             type: {
-              name: 'Object'
+              name: 'Sequence',
+              element: {
+                required: false,
+                serializedName: 'AdditionalInfoElementType',
+                type: {
+                  name: 'Object'
+                }
+              }
             }
           }
         }
@@ -145,9 +152,10 @@ class CloudError extends Error {
       payload.error.details = deserializedArray;
     }
 
-    if (this.innererror) {
-      payload.error.innererror = JSON.parse(JSON.stringify(this.innererror));
+    if (parameters.additionalInfo) {
+      this.additionalInfo = parameters.additionalInfo;
     }
+
     return payload;
   }
 
@@ -185,8 +193,8 @@ class CloudError extends Error {
           this.details = deserializedArray;
         }
         
-        if (instance.error.innererror) {
-          this.innererror = JSON.parse(JSON.stringify(instance.error.innererror));
+        if (parameters.additionalInfo) {
+          this.additionalInfo = parameters.additionalInfo;
         }
       }
     }
